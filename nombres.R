@@ -68,10 +68,13 @@ data <- data %>% select(short_name, long_name, club) %>%
   mutate(teclado_abajo = FALSE,
          teclado_medio = FALSE,
          teclado_arriba = FALSE) %>% 
-  arrange(-longitud)
+  arrange(-longitud, -nchar(short_name))
 
 # Nombre más largo
 head(data)
+
+# Nombre más corto
+tail(data)
 
 for(i in 1:nrow(data)){
   for(j in 1:length(teclado_abajo)){
@@ -83,6 +86,7 @@ for(i in 1:nrow(data)){
   for(j in 1:length(teclado_arriba)){
     if(grepl(teclado_arriba[j], data$long_name[i], ignore.case = TRUE) == TRUE) data$teclado_arriba[i] <- TRUE 
   }
+  if(i %% 1000 == 0) cat(paste0(i, "/", nrow(data), "\n"))
 }
 
 # Nombre más largo sin teclas de la fila de abajo del teclado
